@@ -46,3 +46,5 @@ captures/
 .idea/copyright/profiles_settings.xml
 .idea/libraries/support_annotations_22_2_1.xml
 .idea/libraries/support_v4_22_2_1.xml
+.idea/kotlinc.xml
+.idea/vcs.xml
