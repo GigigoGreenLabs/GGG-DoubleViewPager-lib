@@ -2,6 +2,7 @@ package com.emoiluj.doubleviewpagersample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.Window;
@@ -9,6 +10,7 @@ import android.view.Window;
 import com.emoiluj.doubleviewpager.DoubleViewPager;
 import com.emoiluj.doubleviewpager.DoubleViewPagerAdapter;
 
+import com.emoiluj.doubleviewpager.HorizontalViewPager;
 import java.util.ArrayList;
 
 
@@ -17,7 +19,7 @@ public class MainActivity extends Activity{
     private DoubleViewPager viewpager;
     private int horizontalChilds;
     private int verticalChilds;
-
+    private DoubleViewPagerAdapter doubleViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,9 @@ public class MainActivity extends Activity{
         generateVerticalAdapters(verticalAdapters);
 
         viewpager = (DoubleViewPager) findViewById(R.id.pager);
-        viewpager.setAdapter(new DoubleViewPagerAdapter(getApplicationContext(), verticalAdapters));
+        doubleViewPagerAdapter =
+            new DoubleViewPagerAdapter(getApplicationContext(), verticalAdapters);
+        viewpager.setAdapter(doubleViewPagerAdapter);
 
         viewpager.setOnSwipeMoveListener(onSwipeMoveListener);
     }
@@ -54,6 +58,19 @@ public class MainActivity extends Activity{
     private DoubleViewPager.OnSwipeMoveListener onSwipeMoveListener = new DoubleViewPager.OnSwipeMoveListener() {
         @Override public void onSwipe() {
             Log.e("SWIPE", "Swipe");
+
+            new Handler().postDelayed(new Runnable() {
+                @Override public void run() {
+                    int currentItem = viewpager.getCurrentItem();
+                    int currentPageSelectedWhenScrolled =
+                        doubleViewPagerAdapter.getVerticalViewPager(currentItem)
+                            .getCurrentPageSelectedWhenScrolled();
+
+                    Log.e("SWIPE", String.valueOf(currentPageSelectedWhenScrolled));
+                }
+            }, 1000);
+
+
         }
     };
 }

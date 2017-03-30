@@ -1648,8 +1648,7 @@ public class VerticalViewPager extends ViewGroup {
           Log.v(TAG, "y:" + y + "lastmotiony" + mLastMotionY + "mInitialy" + mInitialMotionY);
         }
 
-        if (dx != 0 && !isGutterDrag(mLastMotionX, dx) && canScroll(this, false, (int) dx, (int) x,
-            (int) y)) {
+        if (dx != 0 && canScroll(this, false, (int) dx, (int) x, (int) y)) {
           // Nested view has scrollable area under this point. Let it be handled there.
           mLastMotionX = x;
           mLastMotionY = y;
