@@ -194,6 +194,7 @@ public class HorizontalViewPager extends ViewGroup {
   private OnAdapterChangeListener mAdapterChangeListener;
   private int mScrollState = SCROLL_STATE_IDLE;
   private boolean hasToBlockScrollViewPager = false;
+  private DoubleViewPager.OnSwipeMoveListener onSwipeMoveListener;
 
   public HorizontalViewPager(Context context) {
     super(context);
@@ -1395,7 +1396,15 @@ public class HorizontalViewPager extends ViewGroup {
     return (x < mGutterSize && dx > 0) || (x > getWidth() - mGutterSize && dx < 0);
   }
 
+  private long waitToSendOtherSwipeEvent;
+  public static final int TIME_TO_WAIT_TO_SWIPE = 1 * 1000;
+
   @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
+
+    if (onSwipeMoveListener != null && waitToSendOtherSwipeEvent < System.currentTimeMillis()) {
+      onSwipeMoveListener.onSwipe();
+      waitToSendOtherSwipeEvent = System.currentTimeMillis() + TIME_TO_WAIT_TO_SWIPE;
+    }
 
     if (hasToBlockScrollViewPager) {
       return false;
@@ -1598,7 +1607,9 @@ public class HorizontalViewPager extends ViewGroup {
     switch (action & MotionEventCompat.ACTION_MASK) {
 
       case MotionEvent.ACTION_DOWN: {
+
         if (DEBUG) Log.i(TAG, "T - DOWN");
+
         mScroller.abortAnimation();
         mPopulatePending = false;
         populate();
@@ -2577,5 +2588,13 @@ public class HorizontalViewPager extends ViewGroup {
     @Override public void onInvalidated() {
       dataSetChanged();
     }
+  }
+
+  public void setOnSwipeMoveListener(OnSwipeMoveListener onSwipeMoveListener) {
+    this.onSwipeMoveListener = onSwipeMoveListener;
+  }
+
+  public interface OnSwipeMoveListener {
+    void onSwipe();
   }
 }

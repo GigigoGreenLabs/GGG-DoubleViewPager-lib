@@ -2905,7 +2905,7 @@ public class VerticalViewPager extends ViewGroup {
       //  float yPosition = position * pageHeight;
       //  view.setTranslationY(yPosition);
       //}
-      
+
       view.setAlpha((position == 1f || position == -1f) ? 0f : 1f);
       view.setTranslationX(view.getWidth() * -position);
       view.setTranslationY(position < 0 ? position * view.getHeight() : 0f);

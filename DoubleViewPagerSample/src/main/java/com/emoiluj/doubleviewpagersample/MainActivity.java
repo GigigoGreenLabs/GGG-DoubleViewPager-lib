@@ -3,6 +3,7 @@ package com.emoiluj.doubleviewpagersample;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.Window;
 
 import com.emoiluj.doubleviewpager.DoubleViewPager;
@@ -40,6 +41,8 @@ public class MainActivity extends Activity{
 
         viewpager = (DoubleViewPager) findViewById(R.id.pager);
         viewpager.setAdapter(new DoubleViewPagerAdapter(getApplicationContext(), verticalAdapters));
+
+        viewpager.setOnSwipeMoveListener(onSwipeMoveListener);
     }
 
     private void generateVerticalAdapters(ArrayList<PagerAdapter> verticalAdapters) {
@@ -48,4 +51,9 @@ public class MainActivity extends Activity{
         }
     }
 
+    private DoubleViewPager.OnSwipeMoveListener onSwipeMoveListener = new DoubleViewPager.OnSwipeMoveListener() {
+        @Override public void onSwipe() {
+            Log.e("SWIPE", "Swipe");
+        }
+    };
 }
